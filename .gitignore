@@ -27,3 +27,5 @@ go.work.sum
 # Executables
 tvguide
 main
+
+# Ignore url file because security
