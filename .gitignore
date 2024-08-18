@@ -29,3 +29,5 @@ tvguide
 main
 
 # Ignore url file because security
+url.txt
+channel.txt

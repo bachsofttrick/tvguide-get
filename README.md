@@ -2,4 +2,6 @@
 A small app that gets my TV schedule. Written in Go
 
 Todo:
-- [ ] Make a search function for specific channels
+- [x] Make a search function for specific channels
+- [ ] Turn to REST API server
+- [ ] Make an Android app to display these
