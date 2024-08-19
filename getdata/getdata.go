@@ -42,12 +42,34 @@ func FetchJSONData(url string) []model.Channel {
 	return schedule
 }
 
-func SearchChannel(channels []model.Channel, channelName string) []model.Channel {
+func SearchChannel(channels []model.Channel, channelName string, onlyOneMatch bool) []model.Channel {
 	results := []model.Channel{}
+
+	// Split multiple words in search
+	words := strings.Split(channelName, " ")
 	for _, ch := range channels {
-		if strings.Contains(strings.ToLower(ch.Channel.Name), channelName) {
+		lowerChannelName := strings.ToLower(ch.Channel.Name)
+		if strings.Contains(lowerChannelName, words[0]) {
+			if wordlen := len(words); wordlen > 1 {
+				matchAllWords := true
+				// Try and find channel with multiple words in search
+				for i := 1; i < wordlen; i++ {
+					if !strings.Contains(lowerChannelName, words[i]) {
+						matchAllWords = false
+						break
+					}
+				}
+
+				// If the search name doesn't match all words, skip to the next channel
+				if !matchAllWords {
+					continue
+				}
+			}
 			results = append(results, ch)
-			break
+			// Only get the first channel found
+			if onlyOneMatch {
+				break
+			}
 		}
 	}
 	return results
@@ -56,7 +78,7 @@ func SearchChannel(channels []model.Channel, channelName string) []model.Channel
 func SearchForChannels(channels []model.Channel, channelList []string) []model.Channel {
 	searched := []model.Channel{}
 	for _, sh := range channelList {
-		result := SearchChannel(channels, sh)
+		result := SearchChannel(channels, sh, true)
 		searched = append(searched, result...)
 	}
 
