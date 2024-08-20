@@ -5,7 +5,9 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 	"tvguide/model"
+	"tvguide/mytime"
 )
 
 // Retrieves the JSON data from the API endpoint
@@ -38,8 +40,18 @@ func FetchScheduleData(url string) []model.Channel {
 	}
 
 	// Get the schedule and print to terminal
-	schedule := guide.Data.Channels
-	return schedule
+	schedule := &guide.Data.Channels
+	// Iterate over the slice with range
+	for i := range *schedule {
+		ch := &(*schedule)[i] // Get pointer to the i-th Channel
+		// Iterate over the Schedule slice within the Channel
+		for j := range ch.Schedule {
+			pg := &ch.Schedule[j] // Get pointer to the j-th Program
+			// Update UTCStartTime
+			pg.UTCStartTime = mytime.GetUTCTimeFromEpoch(pg.StartTime).Format(time.RFC3339)
+		}
+	}
+	return *schedule
 }
 
 func SearchChannel(channels []model.Channel, channelName string, onlyOneMatch bool) []model.Channel {

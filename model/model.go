@@ -1,9 +1,10 @@
 package model
 
 type Program struct {
-	StartTime int    `json:"startTime"`
-	ProgramId int    `json:"programId"`
-	Title     string `json:"title"`
+	StartTime    int64 `json:"startTime"`
+	UTCStartTime string
+	ProgramId    int64  `json:"programId"`
+	Title        string `json:"title"`
 }
 
 type ChannelInfo struct {
