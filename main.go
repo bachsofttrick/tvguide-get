@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"tvguide/getdata"
-	"tvguide/prettier"
-	"tvguide/readtext"
+	"tvguide/api"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -15,10 +15,6 @@ func main() {
 		}
 	}()
 
-	urls := readtext.OpenTextFile("url.txt")
-	searches := readtext.OpenTextFile("channel.txt")
-	channels := getdata.FetchJSONData(urls[0])
-	searched := getdata.SearchForChannels(channels, searches)
-
-	prettier.Print(searched)
+	r := gin.Default()
+	api.Start(r)
 }

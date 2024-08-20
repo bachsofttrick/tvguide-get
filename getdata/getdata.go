@@ -9,7 +9,7 @@ import (
 )
 
 // Retrieves the JSON data from the API endpoint
-func FetchJSONData(url string) []model.Channel {
+func FetchScheduleData(url string) []model.Channel {
 	// Create a custom request
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
