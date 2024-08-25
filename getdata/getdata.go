@@ -2,6 +2,7 @@ package getdata
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -9,6 +10,9 @@ import (
 	"tvguide/model"
 	"tvguide/mytime"
 )
+
+var urls []string
+var apiKey string
 
 func GetRequest(url string) []byte {
 	// Create a custom request
@@ -36,7 +40,8 @@ func GetRequest(url string) []byte {
 
 // Retrieves the JSON data from the API endpoint
 func FetchScheduleData(url []string, apiKey string) []model.Channel {
-	getChannelurl := strings.Replace(url[0], "{apiKey}", apiKey, 1)
+	urls = url
+	getChannelurl := strings.Replace(urls[0], "{apiKey}", apiKey, 1)
 	body := GetRequest(getChannelurl)
 
 	// Decode the body to an object
@@ -48,32 +53,6 @@ func FetchScheduleData(url []string, apiKey string) []model.Channel {
 
 	// Get the schedule and print to terminal
 	schedule := &guide.Data.Channels
-	// Iterate over the slice with range
-	for i := range *schedule {
-		ch := &(*schedule)[i] // Get pointer to the i-th Channel
-		// Iterate over the Schedule slice within the Channel
-		for j := range ch.Schedule {
-			pg := &ch.Schedule[j] // Get pointer to the j-th Program
-
-			// go func() {
-			// 	// Get details of each program
-			// 	getDetailUrl := strings.Replace(url[1], "{programId}", fmt.Sprint(pg.ProgramId), 1)
-			// 	getDetailUrl = strings.Replace(getDetailUrl, "{apiKey}", apiKey, 1)
-			// 	body = GetRequest(getDetailUrl)
-			// 	// Decode the body to an object
-			// 	var detail model.TVGuideDetail
-			// 	err := json.Unmarshal(body, &detail)
-			// 	if err != nil {
-			// 		panic(err)
-			// 	}
-			// 	pg.Details = detail.DetailData.Item
-			// }()
-
-			// Update UTCStartTime
-			pg.UTCStartTime = mytime.GetUTCTimeFromEpoch(pg.StartTime).Format(time.RFC3339)
-
-		}
-	}
 	return *schedule
 }
 
@@ -114,6 +93,34 @@ func SearchForChannels(channels []model.Channel, channelList []string) []model.C
 	searched := []model.Channel{}
 	for _, sh := range channelList {
 		result := SearchChannel(channels, sh, true)
+		// Iterate over the slice with range
+		for i := range result {
+			ch := &result[i] // Get pointer to the i-th Channel
+			// Iterate over the Schedule slice within the Channel
+			for j := range ch.Schedule {
+				pg := &ch.Schedule[j] // Get pointer to the j-th Program
+
+				// Asynchronously getting program details
+				go func() {
+					// Get details of each program
+					getDetailUrl := strings.Replace(urls[1], "{programId}", fmt.Sprint(pg.ProgramId), 1)
+					getDetailUrl = strings.Replace(getDetailUrl, "{apiKey}", apiKey, 1)
+					body := GetRequest(getDetailUrl)
+					// Decode the body to an object
+					var detail model.TVGuideDetail
+					err := json.Unmarshal(body, &detail)
+					if err != nil {
+						panic(err)
+					}
+					pg.Details = detail.DetailData.Item
+					fmt.Println(fmt.Sprintf("%v updated.", ch.Channel.Name))
+				}()
+
+				// Update UTCStartTime
+				pg.UTCStartTime = mytime.GetUTCTimeFromEpoch(pg.StartTime).Format(time.RFC3339)
+
+			}
+		}
 		searched = append(searched, result...)
 	}
 
