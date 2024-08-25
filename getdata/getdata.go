@@ -10,8 +10,7 @@ import (
 	"tvguide/mytime"
 )
 
-// Retrieves the JSON data from the API endpoint
-func FetchScheduleData(url string) []model.Channel {
+func GetRequest(url string) []byte {
 	// Create a custom request
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -32,9 +31,17 @@ func FetchScheduleData(url string) []model.Channel {
 		panic(err)
 	}
 
+	return body
+}
+
+// Retrieves the JSON data from the API endpoint
+func FetchScheduleData(url []string, apiKey string) []model.Channel {
+	getChannelurl := strings.Replace(url[0], "{apiKey}", apiKey, 1)
+	body := GetRequest(getChannelurl)
+
 	// Decode the body to an object
 	var guide model.TVGuide
-	err = json.Unmarshal(body, &guide)
+	err := json.Unmarshal(body, &guide)
 	if err != nil {
 		panic(err)
 	}
@@ -47,8 +54,24 @@ func FetchScheduleData(url string) []model.Channel {
 		// Iterate over the Schedule slice within the Channel
 		for j := range ch.Schedule {
 			pg := &ch.Schedule[j] // Get pointer to the j-th Program
+
+			// go func() {
+			// 	// Get details of each program
+			// 	getDetailUrl := strings.Replace(url[1], "{programId}", fmt.Sprint(pg.ProgramId), 1)
+			// 	getDetailUrl = strings.Replace(getDetailUrl, "{apiKey}", apiKey, 1)
+			// 	body = GetRequest(getDetailUrl)
+			// 	// Decode the body to an object
+			// 	var detail model.TVGuideDetail
+			// 	err := json.Unmarshal(body, &detail)
+			// 	if err != nil {
+			// 		panic(err)
+			// 	}
+			// 	pg.Details = detail.DetailData.Item
+			// }()
+
 			// Update UTCStartTime
 			pg.UTCStartTime = mytime.GetUTCTimeFromEpoch(pg.StartTime).Format(time.RFC3339)
+
 		}
 	}
 	return *schedule

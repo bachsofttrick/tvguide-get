@@ -12,6 +12,7 @@ import (
 )
 
 var urls = readtext.OpenTextFile("url.txt")
+var apiKey = readtext.OpenTextFile("apiKey.txt")[0]
 var searches = readtext.OpenTextFile("channel.txt")
 var channels []model.Channel
 
@@ -31,7 +32,7 @@ func getSchedule(c *gin.Context) {
 }
 
 func getScheduleJob() {
-	channels = getdata.SearchForChannels(getdata.FetchScheduleData(urls[0]), searches)
+	channels = getdata.SearchForChannels(getdata.FetchScheduleData(urls, apiKey), searches)
 }
 
 func Start(r *gin.Engine) {
@@ -42,8 +43,9 @@ func Start(r *gin.Engine) {
 	// Run the function immediately, then run by tick
 	go func() {
 		for {
-			fmt.Println("Schedule updated")
+			fmt.Println("Updating...")
 			getScheduleJob()
+			fmt.Println("Schedule updated")
 			// Wait for the next tick
 			<-ticker.C
 		}
