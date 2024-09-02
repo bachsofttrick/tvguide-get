@@ -1,5 +1,6 @@
-# tvguide-get
+# tvguide-go
 A small app that gets my TV schedule. Written in Go
+ak is key.
 
 Todo:
 - [x] Make a search function for specific channels
