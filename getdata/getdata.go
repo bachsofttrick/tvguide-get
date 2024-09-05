@@ -113,7 +113,7 @@ func SearchForChannels(channels []model.Channel, channelList []string) []model.C
 						panic(err)
 					}
 					pg.Details = detail.DetailData.Item
-					fmt.Printf(fmt.Sprintf("%v updated.", ch.Channel.Name), "\n")
+					fmt.Printf("%v updated.\n", ch.Channel.Name)
 				}()
 
 				// Update UTCStartTime

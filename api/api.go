@@ -12,7 +12,7 @@ import (
 )
 
 var urls = readtext.OpenTextFile("url.txt")
-var apiKey = readtext.OpenTextFile("apiKey.txt")[0]
+var apiKey = readtext.OpenTextFile("ak.txt")[0]
 var searches = readtext.OpenTextFile("channel.txt")
 var channels []model.Channel
 
