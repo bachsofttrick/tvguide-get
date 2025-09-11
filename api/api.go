@@ -22,6 +22,7 @@ func AttachApi(r *gin.Engine) {
 }
 
 func getSchedule(c *gin.Context) {
+	// This is for ?name= query
 	name := c.Query("name")
 	if len(name) == 0 {
 		c.JSON(http.StatusOK, channels)
@@ -32,7 +33,8 @@ func getSchedule(c *gin.Context) {
 }
 
 func getScheduleJob() {
-	channels = getdata.SearchForChannels(getdata.FetchScheduleData(urls, apiKey), searches)
+	allChannelData := getdata.FetchScheduleData(urls, apiKey)
+	channels = getdata.SearchThroughList(allChannelData, searches)
 }
 
 func Start(r *gin.Engine) {

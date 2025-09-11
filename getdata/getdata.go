@@ -21,7 +21,8 @@ func GetRequest(url string) []byte {
 		panic(err)
 	}
 
-	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Accept-Language", "en-US,en;q=0.5")
 	client := &http.Client{}
 
 	// Start getting the JSON
@@ -30,10 +31,14 @@ func GetRequest(url string) []byte {
 		panic(err)
 	}
 	defer resp.Body.Close()
+
+	// Convert response body to something we can use
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
 	}
+	// Print the body
+	//prettier.PrintFromResponseBody(body)
 
 	return body
 }
@@ -89,10 +94,10 @@ func SearchChannel(channels []model.Channel, channelName string, onlyOneMatch bo
 	return results
 }
 
-func SearchForChannels(channels []model.Channel, channelList []string) []model.Channel {
+func SearchThroughList(channels []model.Channel, channelList []string) []model.Channel {
 	searched := []model.Channel{}
-	for _, sh := range channelList {
-		result := SearchChannel(channels, sh, true)
+	for _, ch := range channelList {
+		result := SearchChannel(channels, ch, true)
 		// Iterate over the slice with range
 		for i := range result {
 			ch := &result[i] // Get pointer to the i-th Channel
@@ -121,6 +126,7 @@ func SearchForChannels(channels []model.Channel, channelList []string) []model.C
 
 			}
 		}
+
 		searched = append(searched, result...)
 	}
 
