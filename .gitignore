@@ -28,5 +28,5 @@ go.work.sum
 tvguide
 main
 
-# Ignore apiKey security
-apiKey.txt
+# Ignore output file
+output.*
