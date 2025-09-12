@@ -4,15 +4,21 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"tvguide/textops"
 )
 
-func PrintFromObject(content any) {
+// Unfortuantely no Named parameter for toFile := false
+func PrintFromObject(content any, toFile bool) {
 	// This is used to print object in json form, NOT for printing binary objects from response body in GET
 	prettyJSON, err := json.MarshalIndent(content, "", " ")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(prettyJSON))
+	if toFile {
+		textops.WriteFile(string(prettyJSON), "output.txt")
+	} else {
+		fmt.Println(string(prettyJSON))
+	}
 }
 
 func PrintFromResponseBody(content []byte) {

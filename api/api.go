@@ -6,14 +6,14 @@ import (
 	"time"
 	"tvguide/getdata"
 	"tvguide/model"
-	"tvguide/readtext"
+	"tvguide/textops"
 
 	"github.com/gin-gonic/gin"
 )
 
-var urls = readtext.OpenTextFile("url.txt")
-var apiKey = readtext.OpenTextFile("ak.txt")[0]
-var searches = readtext.OpenTextFile("channel.txt")
+var urls = textops.OpenFile("url.txt")
+var apiKey = textops.OpenFile("ak.txt")[0]
+var searches = textops.OpenFile("channel.txt")
 var channels []model.Channel
 
 func AttachApi(r *gin.Engine) {
@@ -35,6 +35,11 @@ func getSchedule(c *gin.Context) {
 func getScheduleJob() {
 	allChannelData := getdata.FetchScheduleData(urls, apiKey)
 	channels = getdata.SearchThroughList(allChannelData, searches)
+}
+
+func RunGetScheduleJobOnce() []model.Channel {
+	getScheduleJob()
+	return channels
 }
 
 func Start(r *gin.Engine) {

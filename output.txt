@@ -1,0 +1,81 @@
+[
+ {
+  "channel": {
+   "fullName": "Cartoon Network",
+   "name": "TOON-E",
+   "number": ""
+  },
+  "programSchedules": [
+   {
+    "startTime": 1757566800,
+    "UTCStartTime": "2025-09-11T05:00:00Z",
+    "programId": 9000538351,
+    "title": "Robot Chicken",
+    "Details": {
+     "id": 0,
+     "seasonNumber": 0,
+     "episodeNumber": 0,
+     "episodeTitle": "",
+     "description": "",
+     "tvRating": ""
+    }
+   },
+   {
+    "startTime": 1757567700,
+    "UTCStartTime": "2025-09-11T05:15:00Z",
+    "programId": 9000538352,
+    "title": "Robot Chicken",
+    "Details": {
+     "id": 0,
+     "seasonNumber": 0,
+     "episodeNumber": 0,
+     "episodeTitle": "",
+     "description": "",
+     "tvRating": ""
+    }
+   },
+   {
+    "startTime": 1757568600,
+    "UTCStartTime": "2025-09-11T05:30:00Z",
+    "programId": 9000253741,
+    "title": "American Dad!",
+    "Details": {
+     "id": 0,
+     "seasonNumber": 0,
+     "episodeNumber": 0,
+     "episodeTitle": "",
+     "description": "",
+     "tvRating": ""
+    }
+   },
+   {
+    "startTime": 1757570400,
+    "UTCStartTime": "2025-09-11T06:00:00Z",
+    "programId": 9000305619,
+    "title": "American Dad!",
+    "Details": {
+     "id": 0,
+     "seasonNumber": 0,
+     "episodeNumber": 0,
+     "episodeTitle": "",
+     "description": "",
+     "tvRating": ""
+    }
+   },
+   {
+    "startTime": 1757572200,
+    "UTCStartTime": "2025-09-11T06:30:00Z",
+    "programId": 9000355588,
+    "title": "American Dad!",
+    "Details": {
+     "id": 0,
+     "seasonNumber": 0,
+     "episodeNumber": 0,
+     "episodeTitle": "",
+     "description": "",
+     "tvRating": ""
+    }
+   }
+  ]
+ }
+]

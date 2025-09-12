@@ -1,4 +1,4 @@
-package readtext
+package textops
 
 import (
 	"bufio"
@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func OpenTextFile(fileName string) []string {
+func OpenFile(fileName string) []string {
 	result := []string{}
 	// Open the file
 	file, err := os.Open(fileName)
@@ -28,4 +28,16 @@ func OpenTextFile(fileName string) []string {
 	}
 
 	return result
+}
+
+func WriteFile(input string, fileName string) {
+	f, err := os.OpenFile("output.txt", os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	if _, err := f.WriteString(input); err != nil {
+		panic(err)
+	}
 }
