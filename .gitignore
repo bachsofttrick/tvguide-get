@@ -29,4 +29,4 @@ tvguide
 main
 
 # Ignore output file
-output.*
+output.txt
